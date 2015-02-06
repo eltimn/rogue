@@ -157,7 +157,7 @@ case class ElemMatchWithPredicateClause[V](override val fieldName: String, claus
   override def extend(q: BasicDBObjectBuilder, signature: Boolean): Unit = {
     import com.foursquare.rogue.MongoHelpers.AndCondition
     val nested = q.push("$elemMatch")
-    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None), nested, signature)
+    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None, None), nested, signature)
     nested.pop
   }
 }
@@ -199,7 +199,7 @@ class ModifyPullWithPredicateClause[V](fieldName: String, clauses: Seq[QueryClau
     extends ModifyClause(ModOps.Pull) {
   override def extend(q: BasicDBObjectBuilder): Unit = {
     import com.foursquare.rogue.MongoHelpers.AndCondition
-    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None), q, false)
+    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None, None), q, false)
   }
 }
 
@@ -208,7 +208,7 @@ class ModifyPullObjWithPredicateClause[V](fieldName: String, clauses: Seq[QueryC
   override def extend(q: BasicDBObjectBuilder): Unit = {
     import com.foursquare.rogue.MongoHelpers.AndCondition
     val nested = q.push(fieldName)
-    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None), nested, false)
+    MongoHelpers.MongoBuilder.buildCondition(AndCondition(clauses.toList, None, None), nested, false)
     nested.pop
   }
 }

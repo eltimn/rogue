@@ -15,8 +15,7 @@ libraryDependencies <++= (scalaVersion) { scalaVersion =>
     "ch.qos.logback"           % "logback-classic"     % "1.1.7"      % "provided",
     "org.specs2"              %% "specs2-core"         % specsVersion % "test",
     "org.specs2"              %% "specs2-junit"        % specsVersion % "test",
-    "org.scala-lang"           % "scala-compiler"      % scalaVersion % "test"
-  )
+    "org.scala-lang"           % "scala-compiler"      % scalaVersion % "test")
 }
 
 Seq(RogueBuild.defaultSettings: _*)
