@@ -1,11 +1,11 @@
 libraryDependencies <++= (scalaVersion) { scalaVersion =>
   def sv(s: String) = s + "_" + (scalaVersion match {
-      case "2.10.2" => "2.10"
-      case "2.9.2"  => "2.9.1"
+      case s if (s.startsWith("2.10")) => "2.10"
+      case s if (s.startsWith("2.11")) => "2.11"
       case v => v
   })
   Seq(
-    "com.foursquare"           % sv("rogue-field")     % "2.2.1"      % "compile"
+    "com.foursquare"           % sv("rogue-field")     % "2.2.2"      % "compile"
   )
 }
 

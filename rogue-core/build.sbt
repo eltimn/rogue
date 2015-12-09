@@ -1,16 +1,14 @@
 libraryDependencies <++= (scalaVersion) { scalaVersion =>
   val specsVersion = scalaVersion match {
-    case "2.9.1" | "2.9.2" | "2.10.2" => "1.12.3"
-    case "2.9.0" => "1.6.1"
-    case _       => "1.5"
+      case _  => "3.3.1"
   }
   def sv(s: String) = s + "_" + (scalaVersion match {
-      case "2.10.2" => "2.10"
-      case "2.9.2"  => "2.9.1"
+      case s if (s.startsWith("2.10")) => "2.10"
+      case s if (s.startsWith("2.11")) => "2.11"
       case v => v
   })
   Seq(
-    "com.foursquare"           % sv("rogue-field")     % "2.2.1"      % "compile",
+    "com.foursquare"           % sv("rogue-field")     % "2.2.2"      % "compile",
     "joda-time"                % "joda-time"           % "2.1"        % "provided",
     "org.joda"                 % "joda-convert"        % "1.2"        % "provided",
     "org.mongodb"              % "mongo-java-driver"   % "2.13.2"     % "compile",

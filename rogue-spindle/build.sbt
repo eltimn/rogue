@@ -8,4 +8,4 @@ libraryDependencies <++= (scalaVersion) { scalaVersion =>
 
 Seq(RogueBuild.defaultSettings: _*)
 
-Seq(thriftSettings: _*)
+//Seq(thriftSettings: _*)
