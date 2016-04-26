@@ -1,8 +1,30 @@
+__Note:__
+
+This is a fork of the v3 branch that works with Lift 3. It also adds support for text indexes and searching.
+
+You must add my bintray repo to your SBT configuration.
+
+    resolvers += Resolver.bintrayRepo("eltimn", "maven")
+
+If you're using an SBT version 0.13.5 or earlier you may need to add the [bintray-sbt](https://github.com/softprops/bintray-sbt) plugin to your build.
+
+Artifacts are available for Lift 2.6 with Scala 2.10 and 2.11 and for Lift 3 with Scala 2.11.
+
+Version table:
+
+| Artifact       | Version       |
+| -------------- | ------------- |
+| rogue-field    | 2.2.2         |
+| rogue-index    | 3.0.0-xbeta16 |
+| rogue-core     | 3.0.0-xbeta16 |
+| rogue-lift_2.6 | 3.0.0-xbeta16 |
+| rogue-lift_3.0 | 3.0.0-xbeta16 |
+
 # Rogue
 
 Rogue is a type-safe internal Scala DSL for constructing and executing find and modify commands against
 MongoDB in the Lift web framework. It is fully expressive with respect to the basic options provided
-by MongoDB's native query language, but in a type-safe manner, building on the record types specified in 
+by MongoDB's native query language, but in a type-safe manner, building on the record types specified in
 your Lift models. An example:
 
     Venue.where(_.mayor eqs 1234).and(_.tags contains "Thai").fetch(10)
@@ -20,7 +42,7 @@ For example, take this more complex query:
 
 This query purportedly finds the 10 least popular open venues and closes them. However, MongoDB
 does not (currently) allow you to specify limits on modify queries, so Rogue won't let you either.
-The above will generate a compiler error. 
+The above will generate a compiler error.
 
 Constructions like this:
 
@@ -35,7 +57,7 @@ are in place to prevent you from accidentally doing things you don't want to do 
 
 Because Rogue is designed to work with several versions of lift-mongodb-record (2.2, 2.3, 2.4),
 you'll want to declare your dependency on Rogue as `intransitive` and declare an explicit dependency
-on the version of Lift you want to target. In sbt, that would look like the following: 
+on the version of Lift you want to target. In sbt, that would look like the following:
 
     val rogueField      = "com.foursquare" %% "rogue-field"         % "2.2.0" intransitive()
     val rogueCore       = "com.foursquare" %% "rogue-core"          % "2.2.0" intransitive()
@@ -116,7 +138,7 @@ Major changes in 2.0.0:
 
 ## Maintainers
 
-Rogue was initially developed by Foursquare Labs for internal use -- 
+Rogue was initially developed by Foursquare Labs for internal use --
 nearly all of the MongoDB queries in foursquare's code base go through this library.
 The current maintainers are:
 

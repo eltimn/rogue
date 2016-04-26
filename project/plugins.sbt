@@ -6,3 +6,4 @@
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
 
+addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0")

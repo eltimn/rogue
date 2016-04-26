@@ -3,11 +3,14 @@ import sbt._
 import Keys._
 
 object RogueBuild extends Build {
+  val liftVersion = settingKey[String]("Full version number of the Lift Web Framework")
+  val liftEdition = settingKey[String]("Lift Edition (short version number to append to artifact name)")
+
   override lazy val projects =
     Seq(all, index, core, lift)
 
   lazy val all: Project = Project("all", file(".")) aggregate(
-    index, core, lift)
+    index, core, lift) settings(noPublishing)
 
   lazy val index = Project("rogue-index", file("rogue-index/")) dependsOn()
   lazy val core = Project("rogue-core", file("rogue-core/")) dependsOn(index % "compile;test->test;runtime->runtime")
@@ -15,21 +18,29 @@ object RogueBuild extends Build {
   lazy val spindle = Project("rogue-spindle", file("rogue-spindle/")) dependsOn(core % "compile;test->test;runtime->runtime")
   lazy val IvyDefaultConfiguration = config("default") extend(Compile)
 
+  lazy val noPublishing = Seq(
+    publish := (),
+    publishLocal := ()
+  )
+
   lazy val defaultSettings: Seq[Setting[_]] = Seq(
-    version := "3.0.0-beta15",
+    version := "3.0.0-xbeta16",
     organization := "com.foursquare",
     scalaVersion := "2.11.8",
     crossScalaVersions := Seq("2.11.8", "2.10.6"),
-    publishMavenStyle := true,
+    // publishMavenStyle := true,
     publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    publishTo <<= (version) { v =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.endsWith("-SNAPSHOT"))
-        Some("snapshots" at nexus+"content/repositories/snapshots")
-      else
-        Some("releases" at nexus+"service/local/staging/deploy/maven2")
-    },
+    // pomIncludeRepository := { _ => false },
+    // publishTo <<= (version) { v =>
+    //   val nexus = "https://oss.sonatype.org/"
+    //   if (v.endsWith("-SNAPSHOT"))
+    //     Some("snapshots" at nexus+"content/repositories/snapshots")
+    //   else
+    //     Some("releases" at nexus+"service/local/staging/deploy/maven2")
+    // },
+    homepage := Some(url("https://github.com/eltimn/rogue/tree/tcn_v3_lift3")),
+    licenses := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0.txt"))),
+    publishTo := Some("eltimn-maven" at s"https://api.bintray.com/maven/eltimn/maven/${name.value}/;publish=1"),
     pomExtra := (
       <url>http://github.com/foursquare/rogue</url>
       <licenses>
@@ -70,22 +81,23 @@ object RogueBuild extends Build {
     // https://github.com/harrah/xsbt/issues/85
     unmanagedClasspath in Compile += Attributed.blank(new java.io.File("doesnotexist")),
 
-    testFrameworks += new TestFramework("com.novocode.junit.JUnitFrameworkNoMarker"),
-    credentials ++= {
-      val sonatype = ("Sonatype Nexus Repository Manager", "oss.sonatype.org")
-      def loadMavenCredentials(file: java.io.File) : Seq[Credentials] = {
-        xml.XML.loadFile(file) \ "servers" \ "server" map (s => {
-          val host = (s \ "id").text
-          val realm = if (host == sonatype._2) sonatype._1 else "Unknown"
-          Credentials(realm, host, (s \ "username").text, (s \ "password").text)
-        })
-      }
-      val ivyCredentials   = Path.userHome / ".ivy2" / ".credentials"
-      val mavenCredentials = Path.userHome / ".m2"   / "settings.xml"
-      (ivyCredentials.asFile, mavenCredentials.asFile) match {
-        case (ivy, _) if ivy.canRead => Credentials(ivy) :: Nil
-        case (_, mvn) if mvn.canRead => loadMavenCredentials(mvn)
-        case _ => Nil
-      }
-    })
+    testFrameworks += new TestFramework("com.novocode.junit.JUnitFrameworkNoMarker")
+    // credentials ++= {
+    //   val sonatype = ("Sonatype Nexus Repository Manager", "oss.sonatype.org")
+    //   def loadMavenCredentials(file: java.io.File) : Seq[Credentials] = {
+    //     xml.XML.loadFile(file) \ "servers" \ "server" map (s => {
+    //       val host = (s \ "id").text
+    //       val realm = if (host == sonatype._2) sonatype._1 else "Unknown"
+    //       Credentials(realm, host, (s \ "username").text, (s \ "password").text)
+    //     })
+    //   }
+    //   val ivyCredentials   = Path.userHome / ".ivy2" / ".credentials"
+    //   val mavenCredentials = Path.userHome / ".m2"   / "settings.xml"
+    //   (ivyCredentials.asFile, mavenCredentials.asFile) match {
+    //     case (ivy, _) if ivy.canRead => Credentials(ivy) :: Nil
+    //     case (_, mvn) if mvn.canRead => loadMavenCredentials(mvn)
+    //     case _ => Nil
+    //   }
+    // }
+  )
 }
