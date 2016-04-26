@@ -22,8 +22,8 @@ class QueryTest extends JUnitMustMatchers {
   def testProduceACorrectJSONQueryString {
     val d1 = new DateTime(2010, 5, 1, 0, 0, 0, 0, DateTimeZone.UTC)
     val d2 = new DateTime(2010, 5, 2, 0, 0, 0, 0, DateTimeZone.UTC)
-    val oid1 = new ObjectId(d1.toDate, 0, 0)
-    val oid2 = new ObjectId(d2.toDate, 0, 0)
+    val oid1 = new ObjectId(d1.toDate, 0)
+    val oid2 = new ObjectId(d2.toDate, 0)
     val oid = new ObjectId
     val ven1 = Venue.createRecord._id(oid1)
 
@@ -301,7 +301,7 @@ class QueryTest extends JUnitMustMatchers {
     Tip.where(_.legacyid eqs 1).modify(_.counts at "foo" setTo 3).toString() must_== query3 + """{ "$set" : { "counts.foo" : 3}}""" + suffix
     Tip.where(_.legacyid eqs 1).modify(_.counts at "foo" inc 5)  .toString() must_== query3 + """{ "$inc" : { "counts.foo" : 5}}""" + suffix
     Tip.where(_.legacyid eqs 1).modify(_.counts at "foo" unset)  .toString() must_== query3 + """{ "$unset" : { "counts.foo" : 1}}""" + suffix
-    Tip.where(_.legacyid eqs 1).modify(_.counts setTo Map("foo" -> 3L, "bar" -> 5L)).toString() must_== query3 + """{ "$set" : { "counts" : { "foo" : 3 , "bar" : 5}}}""" + suffix
+    Tip.where(_.legacyid eqs 1).modify(_.counts setTo Map("foo" -> 3L, "bar" -> 5L)).toString() must_== query3 + """{ "$set" : { "counts" : { "bar" : 5 , "foo" : 3}}}""" + suffix
 
     // Multiple updates
     Venue.where(_.legacyid eqs 1).modify(_.venuename setTo "fshq").and(_.mayor_count setTo 3).toString() must_== query + """{ "$set" : { "mayor_count" : 3 , "venuename" : "fshq"}}""" + suffix

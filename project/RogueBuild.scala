@@ -4,10 +4,10 @@ import Keys._
 
 object RogueBuild extends Build {
   override lazy val projects =
-    Seq(all, index, core, lift, spindle)
+    Seq(all, index, core, lift)
 
   lazy val all: Project = Project("all", file(".")) aggregate(
-    index, core, lift, spindle)
+    index, core, lift)
 
   lazy val index = Project("rogue-index", file("rogue-index/")) dependsOn()
   lazy val core = Project("rogue-core", file("rogue-core/")) dependsOn(index % "compile;test->test;runtime->runtime")
@@ -18,7 +18,8 @@ object RogueBuild extends Build {
   lazy val defaultSettings: Seq[Setting[_]] = Seq(
     version := "3.0.0-beta15",
     organization := "com.foursquare",
-    crossScalaVersions := Seq("2.10.5", "2.11.7"),
+    scalaVersion := "2.11.8",
+    crossScalaVersions := Seq("2.11.8", "2.10.6"),
     publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
@@ -63,6 +64,7 @@ object RogueBuild extends Build {
             case _ => Seq()
         }
     },
+    scalacOptions in Test ++= Seq("-Yrangepos"),
 
     // Hack to work around SBT bug generating scaladoc for projects with no dependencies.
     // https://github.com/harrah/xsbt/issues/85

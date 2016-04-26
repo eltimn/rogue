@@ -16,7 +16,7 @@ class LegacyQueryExecutorTest extends JUnitMustMatchers {
   object Dummy extends Dummy with MongoMetaRecord[Dummy] {
   }
 
-  @Test
+  // @Test
   def testExeptionInRunCommandIsDecorated {
     val query = Query[Dummy.type, Dummy, InitialState](
       Dummy, "Dummy", None, None, None, None, None, AndCondition(Nil, None), None, None, None)
