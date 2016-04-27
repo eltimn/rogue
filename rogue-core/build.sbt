@@ -1,28 +1,29 @@
-libraryDependencies <++= (scalaVersion) { scalaVersion =>
-  val specsVersion = scalaVersion match {
-    case "2.11.5" => "2.4.2"
-    case "2.10.4" => "1.12.3"
+Seq(RogueBuild.defaultSettings: _*)
+
+name <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
+
+libraryDependencies ++= {
+  val specsVersion = scalaVersion.value match {
+    case "2.11.8" => "2.4.2"
+    case "2.10.6" => "1.12.3"
   }
-  val liftVersion = "2.6"
-  def sv(s: String) = s + "_" + (scalaVersion match {
-      case "2.11.5" => "2.11"
-      case "2.10.4" => "2.10"
-  })
   Seq(
-    "com.foursquare"           % sv("rogue-field")     % "2.4.0"      % "compile",
-    "net.liftweb"              % sv("lift-mongodb")    % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-common")     % liftVersion  % "compile",
-    "net.liftweb"              % sv("lift-json")       % liftVersion  % "compile",
-    "net.liftweb"              % sv("lift-util")       % liftVersion  % "compile",
-    "joda-time"                % "joda-time"           % "2.1"        % "provided",
-    "org.joda"                 % "joda-convert"        % "1.2"        % "provided",
-    "org.mongodb"              % "mongo-java-driver"   % "2.12.5"     % "compile",
-    "junit"                    % "junit"               % "4.5"        % "test",
-    "com.novocode"             % "junit-interface"     % "0.6"        % "test",
-    "ch.qos.logback"           % "logback-classic"     % "0.9.26"     % "provided",
-    "org.specs2"              %% "specs2"              % specsVersion % "test",
-    "org.scala-lang"           % "scala-compiler"      % scalaVersion % "test"
+    "com.foursquare"    %% "rogue-field"         % "2.4.0"            % "compile",
+    "net.liftweb"       %% "lift-mongodb"        % liftVersion.value  % "compile" intransitive(),
+    "net.liftweb"       %% "lift-common"         % liftVersion.value  % "compile",
+    "net.liftweb"       %% "lift-json"           % liftVersion.value  % "compile",
+    "net.liftweb"       %% "lift-util"           % liftVersion.value  % "compile",
+    "joda-time"          % "joda-time"           % "2.9.2"            % "provided",
+    "org.joda"           % "joda-convert"        % "1.8.1"            % "provided",
+    "org.mongodb"        % "mongo-java-driver"   % "2.14.1"           % "compile",
+    "junit"              % "junit"               % "4.5"              % "test",
+    "com.novocode"       % "junit-interface"     % "0.6"              % "test",
+    "ch.qos.logback"     % "logback-classic"     % "1.1.7"            % "provided",
+    "org.specs2"        %% "specs2"              % specsVersion       % "test",
+    "org.scala-lang"     % "scala-compiler"      % scalaVersion.value % "test"
   )
 }
 
-Seq(RogueBuild.defaultSettings: _*)
+// Necessary beginning with sbt 0.13, otherwise Lift editions get messed up.
+// E.g. "2.5" gets converted to "2-5"
+moduleName := name.value

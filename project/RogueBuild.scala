@@ -3,6 +3,9 @@ import sbt._
 import Keys._
 
 object RogueBuild extends Build {
+  val liftVersion = settingKey[String]("Full version number of the Lift Web Framework")
+  val liftEdition = settingKey[String]("Lift Edition (short version number to append to artifact name)")
+
   override lazy val projects =
     Seq(all, index, core, lift)
 
@@ -17,8 +20,13 @@ object RogueBuild extends Build {
   lazy val defaultSettings: Seq[Setting[_]] = Seq(
     version := "2.5.2-SNAPSHOT",
     organization := "com.foursquare",
-    scalaVersion := "2.10.4",
-    crossScalaVersions := Seq("2.10.4", "2.11.5"),
+    scalaVersion := "2.10.6",
+    liftVersion <<= liftVersion ?? "2.6.3", // "3.0-RC2"
+    liftEdition <<= liftVersion apply { _.substring(0,3) },
+    crossScalaVersions <<= liftEdition { le => le match {
+      case "3.0" => Seq("2.11.8")
+      case _ => Seq("2.10.6", "2.11.8")
+    }},
     publishMavenStyle := true,
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },

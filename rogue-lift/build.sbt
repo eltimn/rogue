@@ -1,20 +1,20 @@
-libraryDependencies <++= (scalaVersion) { scalaVersion =>
-  val liftVersion = "2.6"
-  def sv(s: String) = s + "_" + (scalaVersion match {
-      case "2.11.5" => "2.11"
-      case "2.10.4" => "2.10"
-  })
-  Seq(
-    "net.liftweb"              % sv("lift-util")           % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-common")         % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-record")         % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-mongodb-record") % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-mongodb")        % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-webkit")         % liftVersion  % "compile" intransitive(),
-    "net.liftweb"              % sv("lift-json")           % liftVersion  % "compile",
-    "joda-time"                % "joda-time"               % "2.1"        % "compile",
-    "org.joda"                 % "joda-convert"            % "1.2"        % "compile",
-    "org.mongodb"              % "mongo-java-driver"       % "2.12.5"     % "compile")
-}
-
 Seq(RogueBuild.defaultSettings: _*)
+
+name <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
+
+libraryDependencies ++= Seq(
+  "net.liftweb"     %% "lift-util"           % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-common"         % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-record"         % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-mongodb-record" % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-mongodb"        % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-webkit"         % liftVersion.value  % "compile" intransitive(),
+  "net.liftweb"     %% "lift-json"           % liftVersion.value  % "compile",
+  "joda-time"        % "joda-time"           % "2.9.2"            % "compile",
+  "org.joda"         % "joda-convert"        % "1.8.1"            % "compile",
+  "org.mongodb"      % "mongo-java-driver"   % "2.14.1"           % "compile"
+)
+
+// Necessary beginning with sbt 0.13, otherwise Lift editions get messed up.
+// E.g. "2.5" gets converted to "2-5"
+moduleName := name.value
