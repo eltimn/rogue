@@ -2,7 +2,7 @@ package com.foursquare.rogue
 
 import com.foursquare.index.UntypedMongoIndex
 import com.foursquare.field.{Field, OptionalField}
-import com.mongodb.{DB, DBCollection, DBObject, Mongo, ServerAddress, WriteConcern}
+import com.mongodb.{DB, DBCollection, DBObject, MongoClient, ServerAddress, WriteConcern}
 import com.foursquare.rogue.MongoHelpers.{AndCondition, MongoModify, MongoSelect}
 import org.junit.{Before, Test}
 import org.specs2.matcher.JUnitMustMatchers
@@ -19,7 +19,7 @@ object TrivialORM {
 
   val mongo = {
     val MongoPort = Option(System.getenv("MONGO_PORT")).map(_.toInt).getOrElse(37648)
-    new Mongo(new ServerAddress("localhost", MongoPort))
+    new MongoClient(new ServerAddress("localhost", MongoPort))
   }
 
   def disconnectFromMongo = {
