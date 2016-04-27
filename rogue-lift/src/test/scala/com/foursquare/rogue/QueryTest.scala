@@ -809,7 +809,7 @@ class QueryTest extends JUnitMustMatchers {
     }
 
     private val settings = new Settings
-    val loader = manifest[Venue].erasure.getClassLoader
+    val loader = manifest[Venue].runtimeClass.getClassLoader
     settings.classpath.value = Source.fromURL(loader.getResource("app.class.path")).mkString
     settings.bootclasspath.append(Source.fromURL(loader.getResource("boot.class.path")).mkString)
     settings.deprecation.value = true // enable detailed deprecation warnings

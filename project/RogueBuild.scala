@@ -21,7 +21,7 @@ object RogueBuild extends Build {
     version := "2.5.2-SNAPSHOT",
     organization := "com.foursquare",
     scalaVersion := "2.10.6",
-    liftVersion <<= liftVersion ?? "2.6.3", // "3.0-RC2"
+    liftVersion <<= liftVersion ?? "2.6.3", // 3.0-RC2
     liftEdition <<= liftVersion apply { _.substring(0,3) },
     crossScalaVersions <<= liftEdition { le => le match {
       case "3.0" => Seq("2.11.8")
