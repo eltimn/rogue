@@ -20,23 +20,26 @@ object RogueBuild extends Build {
   lazy val defaultSettings: Seq[Setting[_]] = Seq(
     version := "2.5.2-SNAPSHOT",
     organization := "com.foursquare",
-    scalaVersion := "2.10.6",
-    liftVersion <<= liftVersion ?? "2.6.3", // 3.0-RC2
+    scalaVersion := "2.11.8",
+    liftVersion <<= liftVersion ?? "3.0-RC2", // 2.6.3
     liftEdition <<= liftVersion apply { _.substring(0,3) },
     crossScalaVersions <<= liftEdition { le => le match {
       case "3.0" => Seq("2.11.8")
       case _ => Seq("2.10.6", "2.11.8")
     }},
-    publishMavenStyle := true,
+    // publishMavenStyle := true,
     publishArtifact in Test := false,
-    pomIncludeRepository := { _ => false },
-    publishTo <<= (version) { v =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.endsWith("-SNAPSHOT"))
-        Some("snapshots" at nexus+"content/repositories/snapshots")
-      else
-        Some("releases" at nexus+"service/local/staging/deploy/maven2")
-    },
+    // pomIncludeRepository := { _ => false },
+    // publishTo <<= (version) { v =>
+    //   val nexus = "https://oss.sonatype.org/"
+    //   if (v.endsWith("-SNAPSHOT"))
+    //     Some("snapshots" at nexus+"content/repositories/snapshots")
+    //   else
+    //     Some("releases" at nexus+"service/local/staging/deploy/maven2")
+    // },
+    homepage := Some(url("https://github.com/eltimn/rogue/tree/v2")),
+    licenses := Seq(("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0.txt"))),
+    publishTo := Some("eltimn-maven" at s"https://api.bintray.com/maven/eltimn/maven/${name.value}/;publish=1"),
     pomExtra := (
       <url>http://github.com/foursquare/rogue</url>
       <licenses>
