@@ -20,13 +20,10 @@ object RogueBuild extends Build {
   lazy val defaultSettings: Seq[Setting[_]] = Seq(
     version := "2.5.2-SNAPSHOT",
     organization := "com.foursquare",
-    scalaVersion := "2.11.8",
-    liftVersion <<= liftVersion ?? "3.0-RC2", // 2.6.3
+    scalaVersion := "2.12.2",
+    liftVersion <<= liftVersion ?? "3.0.1",
     liftEdition <<= liftVersion apply { _.substring(0,3) },
-    crossScalaVersions <<= liftEdition { le => le match {
-      case "3.0" => Seq("2.11.8")
-      case _ => Seq("2.10.6", "2.11.8")
-    }},
+    crossScalaVersions := Seq("2.11.8", "2.12.2"),
     // publishMavenStyle := true,
     publishArtifact in Test := false,
     // pomIncludeRepository := { _ => false },

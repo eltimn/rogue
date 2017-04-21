@@ -5,10 +5,10 @@ name <<= (name, liftEdition) { (n, e) =>  n + "_" + e }
 libraryDependencies ++= {
   val specsVersion = scalaVersion.value match {
     case "2.11.8" => "2.4.2"
-    case "2.10.6" => "1.12.3"
+    case "2.12.2" => "3.3"
   }
   Seq(
-    "com.foursquare"    %% "rogue-field"         % "2.4.0"            % "compile",
+    // "com.foursquare"    %% "rogue-field"         % "2.4.0"            % "compile",
     "net.liftweb"       %% "lift-mongodb"        % liftVersion.value  % "compile" intransitive(),
     "net.liftweb"       %% "lift-common"         % liftVersion.value  % "compile",
     "net.liftweb"       %% "lift-json"           % liftVersion.value  % "compile",
@@ -19,7 +19,7 @@ libraryDependencies ++= {
     "junit"              % "junit"               % "4.5"              % "test",
     "com.novocode"       % "junit-interface"     % "0.6"              % "test",
     "ch.qos.logback"     % "logback-classic"     % "1.1.7"            % "provided",
-    "org.specs2"        %% "specs2"              % specsVersion       % "test",
+    // "org.specs2"        %% "specs2"              % specsVersion       % "test",
     "org.scala-lang"     % "scala-compiler"      % scalaVersion.value % "test"
   )
 }
